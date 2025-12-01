@@ -1,0 +1,30 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin images/circle.xnb
+/importer:
+/processor:
+/build:images/circle.xnb
+
+#begin images/paddle.xnb
+/importer:
+/processor:
+/build:images/paddle.xnb
+
+#begin images/rectangle.xnb
+/importer:
+/processor:
+/build:images/rectangle.xnb
+
