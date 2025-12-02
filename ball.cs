@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Breakout_game_2
 {
-    public class ball
+    public class Ball
     {
 
         private Texture2D _texture;
         private Vector2 _speed;
         private Rectangle _location;
 
-        public ball(Texture2D texture, Rectangle location)
+        public Ball(Texture2D texture, Rectangle location)
         {
             _texture = texture;
             _location = location;

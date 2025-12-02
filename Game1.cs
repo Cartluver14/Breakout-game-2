@@ -10,16 +10,16 @@ namespace Breakout_game_2
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private ball ball1;
-        private brick brick1;
-        private paddel paddel;
+       
         Texture2D ballTexture;
-        MouseState MouseState; previousmousestate;
+        MouseState MouseState, previousmousestate;
         bool clicked = false;
         Texture2D brickTexture;
-        List<brick> brickrectangle = new List<brick>();
+        List<Brick> brickrectangle = new List<Brick>();
         Rectangle window;
-        Texture2D paddelTexture;
+        Texture2D paddleTexture;
+        Ball ball1;
+        Paddle paddle1;
 
 
         public Game1()
@@ -32,35 +32,35 @@ namespace Breakout_game_2
 
         protected override void Initialize()
         {
-            window = new Rectangle(0, 0, 600, 500);
-            _graphics.PreferredBackBufferWidth);
-            _graphics.PreferredBackBufferHeight);
+          
+            _graphics.PreferredBackBufferWidth = 600;
+            _graphics.PreferredBackBufferHeight = 500;
             _graphics.ApplyChanges();
 
-            // TODO: Add your initialization logic here
-
             base.Initialize();
-
-            for (int x = 0; x < 600; x += 25)
-            {
-                for (int y = 0; y < 200; y += 10)
-                {
-                    brick brickrec = new brick(brickTexture, new Rectangle(x, y, 22, 22));
-                    brickrectangle.Add(brickrec);
-                }
-            }
-
-            ball1 = new ball(ballTexture, new Rectangle(400, 250, 40, 40);
+          
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            ballTexture = Content.Load<Texture2D>("ballclass/ball");
-            brickTexture = Content.Load<Texture2D>("brickclass/brick");
-            paddelTexture = Content.Load<Texture2D>("paddelclass/paddel");
+            ballTexture = Content.Load<Texture2D>("Images/ball");
+            brickTexture = Content.Load<Texture2D>("Images/brick");
+            paddleTexture = Content.Load<Texture2D>("Images/paddle");
 
-            // TODO: use this.Content to load your game content here
+           
+            brickrectangle.Clear();
+            for (int x = 0; x < 600; x += 25)
+            {
+                for (int y = 0; y < 200; y += 10)
+                {
+                    Brick brickrec = new Brick(brickTexture, new Rectangle(x, y, 22, 22));
+                    brickrectangle.Add(brickrec);
+                }
+            }
+
+            ball1 = new Ball(ballTexture, new Rectangle(400, 250, 40, 40));
+            paddle1 = new Paddle(paddleTexture, new Rectangle(275, 450, 100, 20), Vector2.Zero);
         }
 
         protected override void Update(GameTime gameTime)
@@ -91,8 +91,8 @@ namespace Breakout_game_2
             _spriteBatch.Begin();
             ball1.Draw(_spriteBatch);
 
-            paddel1 = new paddel(paddelTexture, new Rectangle(MouseState.X - 50, 450, 100, 20), new Vector2(0, 0));
-            paddel1.Draw(_spriteBatch);
+            paddle1 = new Paddle(paddleTexture, new Rectangle(MouseState.X - 50, 450, 100, 20), new Vector2(0, 0));
+            paddle1.Draw(_spriteBatch);
 
 
             for (int i = 0; i < brickrectangle.Count; i++)

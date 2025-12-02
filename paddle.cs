@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace Breakout_game_2
 {
-    public class paddel
+    public class Paddle
     {
 
         public Texture2D _texture;
         public Rectangle _location;
         public Vector2 _speed;
-    }
-    public paddel(Texture2D texture, Rectangle location, Vector2 _speed)
+    
+    public Paddle(Texture2D texture, Rectangle location, Vector2 speed)
         {
             _texture = texture; _location = location;
-            _speed = _speed;
+            _speed = speed;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -35,3 +35,5 @@ namespace Breakout_game_2
                        get { return _location.X; }
             set { _location.X = value; }
         }
+    }
+}
