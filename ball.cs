@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
 
 namespace Breakout_game_2
 {
@@ -9,6 +11,7 @@ namespace Breakout_game_2
         private Texture2D _texture;
         private Vector2 _speed;
         private Rectangle _location;
+        SoundEffect pop;
 
         public Rectangle Rect => _location; // auto-updates with _location
 
@@ -38,6 +41,8 @@ namespace Breakout_game_2
                 {
                     bricks.RemoveAt(i);
                     i--; // Adjust index after removal
+                    break;
+                    pop.Play();
                 }
             }
 
@@ -74,6 +79,7 @@ namespace Breakout_game_2
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _location, Color.White);
+            SoundEffect pop;
         }
 
         public Vector2 Speed

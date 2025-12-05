@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Breakout_game_2
         Texture2D paddleTexture;
         Ball ball1;
         Paddle paddle1;
+        SoundEffect pop;
 
 
 
@@ -49,10 +51,11 @@ namespace Breakout_game_2
             ballTexture = Content.Load<Texture2D>("Images/ball");
             brickTexture = Content.Load<Texture2D>("Images/brick");
             paddleTexture = Content.Load<Texture2D>("Images/paddle");
+            pop = Content.Load<SoundEffect>("soundeffect/pop");
 
 
             bricks.Clear();
-            for (int x = 0; x < 550; x += 30)
+            for (int x = 30; x < 550; x += 30)
             {
                 for (int y = 0; y < 180; y += 30)
                 {
@@ -73,7 +76,7 @@ namespace Breakout_game_2
             paddle1.Update(mouseState);
             if (mouseState.LeftButton == ButtonState.Pressed && !clicked)
             {
-                ball1.Speed = new Vector2(10, 10);
+                ball1.Speed = new Vector2(5, 5);
                 clicked = true;
 
             }
