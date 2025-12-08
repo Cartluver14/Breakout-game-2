@@ -22,7 +22,7 @@ namespace Breakout_game_2
         Texture2D paddleTexture;
         Ball ball1;
         Paddle paddle1;
-        SoundEffect pop;
+        SoundEffect popSound;
 
 
 
@@ -51,7 +51,7 @@ namespace Breakout_game_2
             ballTexture = Content.Load<Texture2D>("Images/ball");
             brickTexture = Content.Load<Texture2D>("Images/brick");
             paddleTexture = Content.Load<Texture2D>("Images/paddle");
-            pop = Content.Load<SoundEffect>("soundeffect/pop");
+            popSound = Content.Load<SoundEffect>("soundeffect/pop");
 
 
             bricks.Clear();
@@ -81,7 +81,18 @@ namespace Breakout_game_2
 
             }
 
-           
+            for (int i = 0; i < bricks.Count; i++)
+            {
+                if (ball1.Bounce(bricks[i]))
+                {
+                    popSound.Play();
+                    bricks.RemoveAt(i);     
+                    i--;    
+                    break;
+                }
+            }
+
+
 
 
 

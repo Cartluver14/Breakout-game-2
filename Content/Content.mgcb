@@ -49,9 +49,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/paddle.png
 
-#begin soundeffect/pop.mp3
+#begin X:/My Drive/Downloads/pop.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:soundeffect/pop.mp3
+/build:X:/My Drive/Downloads/pop.mp3;soundeffect/pop.mp3
 

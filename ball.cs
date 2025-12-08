@@ -9,9 +9,10 @@ namespace Breakout_game_2
     public class Ball
     {
         private Texture2D _texture;
+        
         private Vector2 _speed;
         private Rectangle _location;
-        SoundEffect pop;
+        
 
         public Rectangle Rect => _location; // auto-updates with _location
 
@@ -35,16 +36,16 @@ namespace Breakout_game_2
                 _speed.Y = -_speed.Y;
             }
             
-            for (int i = 0; i < bricks.Count; i++)
-            {
-                if (Bounce(bricks[i]))
-                {
-                    bricks.RemoveAt(i);
-                    i--; // Adjust index after removal
-                    break;
-                    pop.Play();
-                }
-            }
+            //for (int i = 0; i < bricks.Count; i++)
+            //{
+            //    if (Bounce(bricks[i]))
+            //    {
+            //        bricks.RemoveAt(i);
+            //        i--; // Adjust index after removal
+            //        break;
+                    
+            //    }
+            //}
 
             // Wall bounce
             if (_location.Right >= 600 || _location.Left <= 0)
@@ -79,7 +80,7 @@ namespace Breakout_game_2
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _location, Color.White);
-            SoundEffect pop;
+            
         }
 
         public Vector2 Speed
