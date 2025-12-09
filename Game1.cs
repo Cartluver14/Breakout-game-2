@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
@@ -20,9 +21,11 @@ namespace Breakout_game_2
         List<Brick> bricks = new List<Brick>();
         Rectangle window;
         Texture2D paddleTexture;
-        Ball ball1;
+        Ball korokball;
         Paddle paddle1;
         SoundEffect popSound;
+        Song koroksound;
+        Texture2D korokbg;
 
 
 
@@ -48,10 +51,12 @@ namespace Breakout_game_2
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            ballTexture = Content.Load<Texture2D>("Images/ball");
+            ballTexture = Content.Load<Texture2D>("Images/korokball");
             brickTexture = Content.Load<Texture2D>("Images/brick");
-            paddleTexture = Content.Load<Texture2D>("Images/paddle");
+            paddleTexture = Content.Load<Texture2D>("Images/korok paddle");
             popSound = Content.Load<SoundEffect>("soundeffect/pop");
+            korokbg = Content.Load<Texture2D>("Images/korokbg");
+            koroksound = Content.Load<Song>("soundeffect/koroksound");
 
 
             bricks.Clear();
@@ -64,7 +69,7 @@ namespace Breakout_game_2
                 }
             }
 
-            ball1 = new Ball(ballTexture, new Rectangle(400, 250, 20, 20));
+            korokball = new Ball(ballTexture, new Rectangle(400, 250, 35, 35));
             paddle1 = new Paddle(paddleTexture, new Rectangle(275, 450, 100, 20), Vector2.Zero);
         }
 
@@ -76,14 +81,17 @@ namespace Breakout_game_2
             paddle1.Update(mouseState);
             if (mouseState.LeftButton == ButtonState.Pressed && !clicked)
             {
-                ball1.Speed = new Vector2(5, 5);
+                korokball.Speed = new Vector2(5, 5);
                 clicked = true;
+                MediaPlayer.Play(koroksound);
+
 
             }
 
+
             for (int i = 0; i < bricks.Count; i++)
             {
-                if (ball1.Bounce(bricks[i]))
+                if (korokball.Bounce(bricks[i]))
                 {
                     popSound.Play();
                     bricks.RemoveAt(i);     
@@ -98,7 +106,7 @@ namespace Breakout_game_2
 
             // TODO: Add your update logic here
 
-            ball1.Update(paddle1,  bricks);
+            korokball.Update(paddle1,  bricks);
 
             base.Update(gameTime);
         }
@@ -107,15 +115,20 @@ namespace Breakout_game_2
         {
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
-            ball1.Draw(_spriteBatch);
+            korokball.Draw(_spriteBatch);
+
 
             paddle1.Draw(_spriteBatch);
+
+
 
 
             for (int i = 0; i < bricks.Count; i++)
             {
                 bricks[i].Draw(_spriteBatch);
             }
+            _spriteBatch.Draw(korokbg, new Rectangle(0, 0, 600, 500), Color.White * 0.2f);
+
             _spriteBatch.End();
 
             // TODO: Add your drawing code here

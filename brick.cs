@@ -21,7 +21,20 @@ namespace Breakout_game_2
             _color = Color.White;
             if (location.Height > 20)
             {
-                _color = Color.Pink;
+                _color = Color.LightGreen;
+            }
+            else if (location.Height > -20)
+            {
+                _color = Color.Orange;
+            }
+            else if (location.Height > 40)
+            {
+                _color = Color.Red;
+            }
+            else if (location.Height > 200)
+            {
+                _color = Color.Yellow;
+
             }
             
 
