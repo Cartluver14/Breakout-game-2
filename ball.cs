@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Runtime.Intrinsics.X86;
 
@@ -23,11 +24,16 @@ namespace Breakout_game_2
             _speed = Vector2.Zero;
         }
 
-        public void Update(Paddle paddle, List<Brick> bricks)
+        public void Update(Paddle paddle, List<Brick> bricks,MouseState mouseState,bool clicked)
+
         {
             // Move ball
             _location.X += (int)_speed.X;
             _location.Y += (int)_speed.Y;
+            if (mouseState.LeftButton == ButtonState.Pressed && clicked)
+            {
+                _location = new Rectangle(400, 250, 35, 35);
+            }
 
 
             // Paddle Bounce

@@ -26,6 +26,10 @@ namespace Breakout_game_2
         SoundEffect popSound;
         Song koroksound;
         Texture2D korokbg;
+        int score = 0;
+        SpriteFont scorefont;
+        float timer = 0f;
+       
 
 
 
@@ -34,7 +38,7 @@ namespace Breakout_game_2
             _graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         protected override void Initialize()
@@ -57,6 +61,7 @@ namespace Breakout_game_2
             popSound = Content.Load<SoundEffect>("soundeffect/pop");
             korokbg = Content.Load<Texture2D>("Images/korokbg");
             koroksound = Content.Load<Song>("soundeffect/koroksound");
+            scorefont = Content.Load<SpriteFont>("Fonts/scorefont");
 
 
             bricks.Clear();
@@ -86,6 +91,7 @@ namespace Breakout_game_2
                 MediaPlayer.Play(koroksound);
 
 
+
             }
 
 
@@ -94,11 +100,39 @@ namespace Breakout_game_2
                 if (korokball.Bounce(bricks[i]))
                 {
                     popSound.Play();
-                    bricks.RemoveAt(i);     
-                    i--;    
+                    bricks.RemoveAt(i);    
+                    score += 1;
+                    if (score == 10)
+                    {
+                        korokball.Speed = new Vector2(
+                            korokball.Speed.X * 1.2f,
+                            korokball.Speed.Y * 1.2f
+                        );
+                    }
+                     else if (score == 20)
+                    {
+                        korokball.Speed = new Vector2(
+                            korokball.Speed.X * 1.2f,
+                            korokball.Speed.Y * 1.2f
+                        );
+                        }
+                     else if (score == 30)
+                    {
+                        korokball.Speed = new Vector2(
+                            korokball.Speed.X * 1.2f,
+                            korokball.Speed.Y * 1.2f
+                        );
+                        }
+                     
+                    
+                        
+
+                        i--;    
                     break;
                 }
+                
             }
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
 
@@ -106,7 +140,7 @@ namespace Breakout_game_2
 
             // TODO: Add your update logic here
 
-            korokball.Update(paddle1,  bricks);
+            korokball.Update(paddle1,  bricks, mouseState, clicked);
 
             base.Update(gameTime);
         }
@@ -128,6 +162,8 @@ namespace Breakout_game_2
                 bricks[i].Draw(_spriteBatch);
             }
             _spriteBatch.Draw(korokbg, new Rectangle(0, 0, 600, 500), Color.White * 0.2f);
+            _spriteBatch.DrawString(scorefont, "Score: " + score, new Vector2(30, 400), Color.White);
+            _spriteBatch.DrawString(scorefont, "Time: " + (int)timer, new Vector2(30, 430), Color.White);
 
             _spriteBatch.End();
 
