@@ -7,7 +7,14 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 
 namespace Breakout_game_2
+
 {
+    enum Screen
+    {
+        Start,
+        Game,
+        GameOver
+    }
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -26,10 +33,16 @@ namespace Breakout_game_2
         SoundEffect popSound;
         Song koroksound;
         Texture2D korokbg;
+        Texture2D startbg;
+        Texture2D endbg;
         int score = 0;
         SpriteFont scorefont;
         float timer = 0f;
-       
+        Rectangle ground;
+        bool gameStarted = false;
+        Screen screen;
+
+
 
 
 
@@ -47,6 +60,7 @@ namespace Breakout_game_2
             _graphics.PreferredBackBufferWidth = 600;
             _graphics.PreferredBackBufferHeight = 500;
             _graphics.ApplyChanges();
+            screen = Screen.Start;
 
             base.Initialize();
 
@@ -62,6 +76,8 @@ namespace Breakout_game_2
             korokbg = Content.Load<Texture2D>("Images/korokbg");
             koroksound = Content.Load<Song>("soundeffect/koroksound");
             scorefont = Content.Load<SpriteFont>("Fonts/scorefont");
+            startbg = Content.Load<Texture2D>("Images/koroksc");
+            ground = new Rectangle(0, 500, 600, 10);
 
 
             bricks.Clear();
@@ -83,64 +99,83 @@ namespace Breakout_game_2
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             mouseState = Mouse.GetState();
-            paddle1.Update(mouseState);
-            if (mouseState.LeftButton == ButtonState.Pressed && !clicked)
+
+            if (screen == Screen.Start)
             {
-                korokball.Speed = new Vector2(5, 5);
-                clicked = true;
-                MediaPlayer.Play(koroksound);
-
-
-
-            }
-
-
-            for (int i = 0; i < bricks.Count; i++)
-            {
-                if (korokball.Bounce(bricks[i]))
+                if (mouseState.RightButton == ButtonState.Pressed && previousmousestate.RightButton == ButtonState.Released)
                 {
-                    popSound.Play();
-                    bricks.RemoveAt(i);    
-                    score += 1;
-                    if (score == 10)
-                    {
-                        korokball.Speed = new Vector2(
-                            korokball.Speed.X * 1.2f,
-                            korokball.Speed.Y * 1.2f
-                        );
-                    }
-                     else if (score == 20)
-                    {
-                        korokball.Speed = new Vector2(
-                            korokball.Speed.X * 1.2f,
-                            korokball.Speed.Y * 1.2f
-                        );
-                        }
-                     else if (score == 30)
-                    {
-                        korokball.Speed = new Vector2(
-                            korokball.Speed.X * 1.2f,
-                            korokball.Speed.Y * 1.2f
-                        );
-                        }
-                     
-                    
-                        
-
-                        i--;    
-                    break;
+                    screen = Screen.Game;
                 }
-                
             }
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            else if (screen == Screen.Game)
+            {
+                paddle1.Update(mouseState);
+                if (mouseState.LeftButton == ButtonState.Pressed && !clicked)
+                {
+
+                    korokball.Speed = new Vector2(5, 5);
+                    clicked = true;
+                    MediaPlayer.Play(koroksound);
+
+
+
+                }
+
+
+                for (int i = 0; i < bricks.Count; i++)
+                {
+                    if (korokball.Bounce(bricks[i]))
+                    {
+                        popSound.Play();
+                        bricks.RemoveAt(i);
+                        score += 1;
+                        if (score == 10)
+                        {
+                            korokball.Speed = new Vector2(
+                                korokball.Speed.X * 1.2f,
+                                korokball.Speed.Y * 1.2f
+                            );
+                        }
+                        else if (score == 20)
+                        {
+                            korokball.Speed = new Vector2(
+                                korokball.Speed.X * 1.2f,
+                                korokball.Speed.Y * 1.2f
+                            );
+                        }
+                        else if (score == 30)
+                        {
+                            korokball.Speed = new Vector2(
+                                korokball.Speed.X * 1.2f,
+                                korokball.Speed.Y * 1.2f
+                            );
+                        }
+
+
+
+
+                        i--;
+                        break;
+                    }
+
+                }
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
 
 
 
-            // TODO: Add your update logic here
+                // TODO: Add your update logic here
 
-            korokball.Update(paddle1,  bricks, mouseState, clicked);
+                korokball.Update(paddle1, bricks, mouseState, clicked);
+                if (korokball.Rect.Intersects(ground))
+                {
+                    Exit();
+                }
+            }
+            
+
+
 
             base.Update(gameTime);
         }
@@ -149,21 +184,31 @@ namespace Breakout_game_2
         {
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
-            korokball.Draw(_spriteBatch);
 
-
-            paddle1.Draw(_spriteBatch);
-
-
-
-
-            for (int i = 0; i < bricks.Count; i++)
+            if (screen == Screen.Start)
             {
-                bricks[i].Draw(_spriteBatch);
+                _spriteBatch.Draw(startbg, new Rectangle(0, 0, 600, 500), Color.White);
+               
             }
-            _spriteBatch.Draw(korokbg, new Rectangle(0, 0, 600, 500), Color.White * 0.2f);
-            _spriteBatch.DrawString(scorefont, "Score: " + score, new Vector2(30, 400), Color.White);
-            _spriteBatch.DrawString(scorefont, "Time: " + (int)timer, new Vector2(30, 430), Color.White);
+            else if (screen == Screen.Game)
+            {
+                korokball.Draw(_spriteBatch);
+
+
+                paddle1.Draw(_spriteBatch);
+
+
+
+
+                for (int i = 0; i < bricks.Count; i++)
+                {
+                    bricks[i].Draw(_spriteBatch);
+                }
+                _spriteBatch.Draw(korokbg, new Rectangle(0, 0, 600, 500), Color.White * 0.2f);
+                _spriteBatch.DrawString(scorefont, "Score: " + score, new Vector2(30, 400), Color.White);
+                _spriteBatch.DrawString(scorefont, "Time: " + (int)timer, new Vector2(30, 430), Color.White);
+
+            }
 
             _spriteBatch.End();
 

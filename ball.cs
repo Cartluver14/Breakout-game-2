@@ -13,6 +13,7 @@ namespace Breakout_game_2
         
         private Vector2 _speed;
         private Rectangle _location;
+
         
 
         public Rectangle Rect => _location; // auto-updates with _location
