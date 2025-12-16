@@ -13,7 +13,10 @@ namespace Breakout_game_2
     {
         Start,
         Game,
-        GameOver
+        GameOver,
+        GameWon
+
+
     }
     public class Game1 : Game
     {
@@ -41,6 +44,8 @@ namespace Breakout_game_2
         Rectangle ground;
         bool gameStarted = false;
         Screen screen;
+        bool gameOver = false;
+        bool gameWon = false;   
 
 
 
@@ -77,10 +82,11 @@ namespace Breakout_game_2
             koroksound = Content.Load<Song>("soundeffect/koroksound");
             scorefont = Content.Load<SpriteFont>("Fonts/scorefont");
             startbg = Content.Load<Texture2D>("Images/koroksc");
+            endbg = Content.Load<Texture2D>("Images/zeldaec");
             ground = new Rectangle(0, 500, 600, 10);
 
 
-            bricks.Clear();
+            
             for (int x = 30; x < 550; x += 30)
             {
                 for (int y = 0; y < 180; y += 30)
@@ -89,6 +95,9 @@ namespace Breakout_game_2
                     bricks.Add(brickrec);
                 }
             }
+
+            
+           
 
             korokball = new Ball(ballTexture, new Rectangle(400, 250, 35, 35));
             paddle1 = new Paddle(paddleTexture, new Rectangle(275, 450, 100, 20), Vector2.Zero);
@@ -99,6 +108,7 @@ namespace Breakout_game_2
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             mouseState = Mouse.GetState();
+           
 
             if (screen == Screen.Start)
             {
@@ -157,12 +167,16 @@ namespace Breakout_game_2
                         i--;
                         break;
                     }
+                    
 
                 }
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
-
+                if (bricks.Count == 0)
+                {
+                    screen = Screen.GameWon;
+                }
 
 
                 // TODO: Add your update logic here
@@ -170,7 +184,7 @@ namespace Breakout_game_2
                 korokball.Update(paddle1, bricks, mouseState, clicked);
                 if (korokball.Rect.Intersects(ground))
                 {
-                    Exit();
+                    screen = Screen.GameOver;
                 }
             }
             
@@ -207,7 +221,25 @@ namespace Breakout_game_2
                 _spriteBatch.Draw(korokbg, new Rectangle(0, 0, 600, 500), Color.White * 0.2f);
                 _spriteBatch.DrawString(scorefont, "Score: " + score, new Vector2(30, 400), Color.White);
                 _spriteBatch.DrawString(scorefont, "Time: " + (int)timer, new Vector2(30, 430), Color.White);
+                
+                
+                
 
+            }
+            else if (screen == Screen.GameWon)
+            {
+                _spriteBatch.Draw(endbg, new Rectangle(0, 0, 600, 500), Color.White);
+                _spriteBatch.DrawString(scorefont, "YOU WIN!", new Vector2(230, 200), Color.White);
+                _spriteBatch.DrawString(scorefont, "Final Score: " + score, new Vector2(200, 240), Color.White);
+                _spriteBatch.DrawString(scorefont, "Final Time: " + (int)timer, new Vector2(200, 270), Color.White);
+                _spriteBatch.DrawString(scorefont, "Press ENTER to Exit", new Vector2(180, 300), Color.White);
+            }
+            else if (screen == Screen.GameOver)
+            {
+                _spriteBatch.Draw(endbg, new Rectangle(0, 0, 600, 500), Color.White);
+                _spriteBatch.DrawString(scorefont, "Final Score: " + score, new Vector2(200, 200), Color.White);
+                _spriteBatch.DrawString(scorefont, "Final Time: " + (int)timer, new Vector2(200, 230), Color.White);
+                _spriteBatch.DrawString(scorefont, "Press Enter to Exit", new Vector2(200, 260), Color.White);
             }
 
             _spriteBatch.End();

@@ -33,6 +33,11 @@ namespace Breakout_game_2
         public void Update(MouseState mouseState)
         {
             _location.X = mouseState.X - _location.Width / 2;
+            if (_location.X < 0)
+                _location.X = 0;
+
+            if (_location.Right > 600)
+                _location.X = 600 - _location.Width;
         }
 
 
